@@ -1,8 +1,8 @@
-# coexistence_dynamics
+# Coexistence Dynamics in Tritrophic Food Webs
 Bifurcation analysis for paper on Coexistence Dynamics in Tritrophic Food Webs - outgrowth of work in Oxford MSc MMSC Modeling Case Study
 
 
-# Project To-Dos
+## Project To-Dos
 - [ ] analytical steady states AM RS
 - [ ] rewrite code
 - - [ ] new non-dim HH
