@@ -3,7 +3,7 @@ Bifurcation analysis for paper on Coexistence Dynamics in Tritrophic Food Webs -
 
 
 ## Project To-Dos
-- [ ] analytical steady states AM RS
+- [x] analytical steady states AM RS
 - [ ] rewrite code
 - - [ ] new non-dim HH
 - - [ ] integer values instead of colors HH
