@@ -15,28 +15,28 @@ y2 = 0; z2 = 0;
 %% 3/ Predator-Subsidy
 
 s3 = dy./(1-dy.*Q);
-y3 = (s3.*Gamma - I).*(1+Q.*s3)./(Phi.*s3);
+y3 = (I - s3.*Gamma).*(1+Q.*s3)./(Phi.*s3);
 x3 = 0; z3 = 0;
 
 %% 4-5/ Predator-Prey-Subsidy
 
-xPPS = [(Phi./K) .* (1- P); + ((Gamma - Phi) .* (1- dy - dz.*P) - dy .* (Phi./K)); ...
-    I - dy.*(Gamma - Phi) - dy.*Q.*I];
+xPPS = [(Phi./K) .* (1- P); + ((Gamma + Phi) .* (1- dy - dz.*P) - dy .* (Phi./K)); ...
+    I - dy.*(Gamma + Phi) - dy.*Q.*I];
 
 rPPS = roots(xPPS);
 
 if(length(rPPS) == 1)
     x4 = rPPS;
     x5 = -1;
-    s4 = I./(Gamma - Phi.*(1-x4./K));
+    s4 = I./(Gamma + Phi.*(1-x4./K));
     s5 = -1;
     y4 = (1 - x4./K).*(1+P.*x4+Q.*s4);
     y5 = -1;
 else
     x4 = rPPS(1);
     x5 = rPPS(2);
-    s4 = I./(Gamma - Phi*(1-x4./K));
-    s5 = I./(Gamma - Phi*(1-x5./K));
+    s4 = I./(Gamma + Phi*(1-x4./K));
+    s5 = I./(Gamma + Phi*(1-x5./K));
     y4 = (1 - x4./K).*(1+P.*x4+Q.*s4);
     y5 = (1 - x5./K).*(1+P.*x5+Q.*s5);
 end
@@ -47,7 +47,7 @@ z5 = 0;
 %% 6/ SuperPredator-Predator-Subsidy
 
 y6 = dz./(Psi - R*dz);
-s6 = (Phi.*y6 + Q.*I - Gamma + sqrt((Gamma - Q.*I - Phi.*y6).^2 + 4.*I.*Gamma.*Q))/(2.*Gamma.*Q);
+s6 = (-Phi.*y6 + Q.*I - Gamma + sqrt((Gamma - Q.*I + Phi.*y6).^2 + 4.*I.*Gamma.*Q))/(2.*Gamma.*Q);
 z6 = (s6./(1+Q.*s6) - dy).*(1+R.*y6);
 x6=0;
 

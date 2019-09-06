@@ -5,7 +5,7 @@ myrm3(0,stt,a1,a2,a3,b1,b2,b3,c1,c2,c3,d1,d2)
 
 %% Determining stability by Jacobian
 
-npt = 1; %Size of parameter sampling range (not too large or it'll take forever!)
+npt = 250; %Size of parameter sampling range (not too large or it'll take forever!)
 
 %Starting parameter values
 
@@ -18,7 +18,7 @@ npt = 1; %Size of parameter sampling range (not too large or it'll take forever!
 
 K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.5; Q = 2.2; R = 1.25; dy = 0.1; dz = 0.1;
 
-minpr = 0.1; maxpr = 5;
+minpr = 0.01; maxpr = 1;
 
 prange = linspace(minpr,maxpr,npt); %Parameter range (can change)
 %prange2 = linspace(minpr2,maxpr2,npt);
@@ -35,7 +35,7 @@ J = @(K,I,Gamma,Phi,Psi,P,Q,R,dy,dz,ss,xs,ys,zs) [-(Gamma+(Phi*ys)/(1+P*xs+Q*ss)
                                                   -xs/(1+P*xs+Q*ss),...
                                                   0;...
                                                   (ys*(1+P*xs+Q*ss)-ys*(xs+ss)*Q)/(1+P*xs+Q*ss)^2,...
-                                                  (ys*(1+P*xs+Q*ss)+ys*(xs+ss)*P)/(1+P*xs+Q*ss)^2,...
+                                                  (ys*(1+P*xs+Q*ss)-ys*(xs+ss)*P)/(1+P*xs+Q*ss)^2,...
                                                   (xs+ss)/(1+P*xs+Q*ss)-dy-zs/(1+R*ys)+ys*(R*zs)/(1+R*ys)^2,...
                                                   -ys/(1+R*ys);...
                                                   0,...
@@ -66,43 +66,43 @@ for i=1:npt
         %Third steady state
         
         s3 = dy./(1-dy.*Q);
-        y3 = (s3.*Gamma - I).*(1+Q.*s3)./(Phi.*s3);
+        y3 = (I - s3.*Gamma).*(1+Q.*s3)./(Phi.*s3);
         x3 = 0; z3 = 0;
         
         st3 = [s3; x3; y3; z3];
         
         %Fourth/fifth steady states
-        xPPS = [(Phi./K) .* (1- P); + ((Gamma - Phi) .* (1- dy - dz.*P) - dy .* (Phi./K)); ...
-        I - dy.*(Gamma - Phi) - dy.*Q.*I];
+        xPPS = [(Phi./K) .* (1- P); + ((Gamma + Phi) .* (1- dy - dz.*P) - dy .* (Phi./K)); ...
+            I - dy.*(Gamma + Phi) - dy.*Q.*I];
 
         rPPS = roots(xPPS);
 
         if(length(rPPS) == 1)
             x4 = rPPS;
             x5 = -1;
-            s4 = I./(Gamma - Phi.*(1-x4./K));
+            s4 = I./(Gamma + Phi.*(1-x4./K));
             s5 = -1;
             y4 = (1 - x4./K).*(1+P.*x4+Q.*s4);
             y5 = -1;
         else
             x4 = rPPS(1);
             x5 = rPPS(2);
-            s4 = I./(Gamma - Phi*(1-x4./K));
-            s5 = I./(Gamma - Phi*(1-x5./K));
+            s4 = I./(Gamma + Phi*(1-x4./K));
+            s5 = I./(Gamma + Phi*(1-x5./K));
             y4 = (1 - x4./K).*(1+P.*x4+Q.*s4);
             y5 = (1 - x5./K).*(1+P.*x5+Q.*s5);
         end
 
         z4 = 0;
         z5 = 0;
-        
+
         st4 = [s4; x4; y4; z4];
         st5 = [s5; x5; y5; z5];
         
         %Sixth steady state
         
         y6 = dz./(Psi - R*dz);
-        s6 = (Phi.*y6 + Q.*I - Gamma + sqrt((Gamma - Q.*I - Phi.*y6).^2 + 4.*I.*Gamma.*Q))/(2.*Gamma.*Q);
+        s6 = (-Phi.*y6 + Q.*I - Gamma + sqrt((Gamma - Q.*I + Phi.*y6).^2 + 4.*I.*Gamma.*Q))/(2.*Gamma.*Q);
         z6 = (s6./(1+Q.*s6) - dy).*(1+R.*y6);
         x6=0;
         
@@ -312,11 +312,11 @@ K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.5; Q = 2.2; R = 1.25; 
 
 options = odeset('RelTol',1e-11,'AbsTol',1e-11);
 
-t_fin = 5000; %Final time
+t_fin = 1000000; %Final time
 
-dt=0.05;
+dt=0.5;
 tspan = [0:dt:t_fin]; %Time span (consider reducing if it takes too long to run, though be wary of 
-y0 = [1 0.2 2 0.1]; %Initial state
+y0 = [0.5 0.5 0.5 0.5]; %Initial state
 
 [t,x] = ode45(@(t,y) myrm3(t,y,K,I,Gamma,Phi,Psi,P,Q,R,dy,dz), tspan, y0, options);
 plot(t,x)
