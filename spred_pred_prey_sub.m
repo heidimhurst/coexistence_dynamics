@@ -5,7 +5,7 @@ myrm3(0,stt,a1,a2,a3,b1,b2,b3,c1,c2,c3,d1,d2)
 
 %% Determining stability by Jacobian
 
-npt = 250; %Size of parameter sampling range (not too large or it'll take forever!)
+npt = 1; %Size of parameter sampling range (not too large or it'll take forever!)
 
 %Starting parameter values
 
@@ -16,17 +16,19 @@ npt = 250; %Size of parameter sampling range (not too large or it'll take foreve
 %a1=4; a2=4; a3=1; b1=3; b2=2; b3=0.2; c1=1; c2=1; c3=1; d1=2/5; d2=1; %GoodDefaultStuff
 %a1=4; a2=4; a3=1; b1=3; b2=2; b3=0.1; c1=20; c2=1; c3=1; d1=0.5; d2=0.5; %Sequence
 
-K = 1; I = 0.1; Gamma = 1; Phi = 1; Psi = 0.1; P = 0.5; Q = 2; R = 1.25; dy = 0.1; dz = 0.01;
+K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.5; Q = 2.2; R = 1.25; dy = 0.1; dz = 0.1;
+
+minpr = 0.1; maxpr = 5;
 
 prange = linspace(minpr,maxpr,npt); %Parameter range (can change)
-prange2 = linspace(minpr2,maxpr2,npt);
+%prange2 = linspace(minpr2,maxpr2,npt);
 
 M= zeros(npt,npt,1); %Initial colour matrix
 %MM = zeros(npt,npt);
 
-J = @(K,I,Gamma,Phi,Psi,P,Q,R,dy,dz,ss,xs,ys,zs) [-(Gamma-(Phi*ys)/(1+P*xs+Q*ss))-ss*(Q*Phi*ys)/(1+P*xs+Q*ss)^2,...
-                                                  -(sx*Phi*ys*P)/(1+P*xs+Q*ss)^2,...
-                                                  ss*Phi/(1+P*xs+Q*ss),...
+J = @(K,I,Gamma,Phi,Psi,P,Q,R,dy,dz,ss,xs,ys,zs) [-(Gamma+(Phi*ys)/(1+P*xs+Q*ss))+ss*(Q*Phi*ys)/(1+P*xs+Q*ss)^2,...
+                                                  +(xs*Phi*ys*P)/(1+P*xs+Q*ss)^2,...
+                                                  -ss*Phi/(1+P*xs+Q*ss),...
                                                   0;...
                                                   xs*ys*Q/(1+P*xs+Q*ss)^2,...
                                                   1-xs/K-ys/(1+P*xs+Q*ss)+xs*(-1/K+P*ys/(1+P*xs+Q*ss)^2),...
@@ -304,16 +306,21 @@ title('Bifurcation Diagram')
 %% Single run of ODE45
 
 %a1=1; a2=8; a3=1; b1=3; b2=2; b3=0.1; c1=1; c2=1; c3=1; d1=0.5; d2=0.5; %GoodDefaultStuff
-a1=0.5; a2=5; a3=1/10; b1=0.5; b2=3; b3=2; d1=2/5; d2=1/100; c1=0.5; c2=1; c3=1; %Chaos
+%a1=0.5; a2=5; a3=1/10; b1=0.5; b2=3; b3=2; d1=2/5; d2=1/100; c1=0.5; c2=1; c3=1; %Chaos
+
+K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.5; Q = 2.2; R = 1.25; dy = 0.1; dz = 0.1;
+
 options = odeset('RelTol',1e-11,'AbsTol',1e-11);
 
-t_fin = 50000; %Final time
+t_fin = 5000; %Final time
 
-dt=0.2;
+dt=0.05;
 tspan = [0:dt:t_fin]; %Time span (consider reducing if it takes too long to run, though be wary of 
-y0 = [0.5 0.5 0.5 0.5]; %Initial state
+y0 = [1 0.2 2 0.1]; %Initial state
 
-[t,x] = ode45(@(t,y) myrm3(t,y,a1,a2,a3,b1,b2,b3,c1,c2,c3,d1,d2), tspan, y0, options);
+[t,x] = ode45(@(t,y) myrm3(t,y,K,I,Gamma,Phi,Psi,P,Q,R,dy,dz), tspan, y0, options);
+plot(t,x)
+legend('subsidy','prey','predator','super predator')
 
 %%
 clf;
