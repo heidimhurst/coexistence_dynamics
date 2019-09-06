@@ -29,7 +29,7 @@ mina1 = 0.1; maxa1=15; mind1=0.1; maxd1=6;
 prangea1 = linspace(mina1,maxa1,npt); %a1 prange
 pranged1 = linspace(mind1,maxd1,npt); %d1 prange
 
-M= zeros(npt,npt,3); %Initial colour matrix
+M= zeros(npt,npt,1); %Initial colour matrix
 %MM = zeros(npt,npt);
 
 %Expressions for steady states in terms of parameters (and other steady
@@ -157,61 +157,68 @@ for i=1:npt
             stab(10)=0;
         end
         
-        if(stab(1)) %Subsidy only
-            M(npt+1-i,j,1)=116/255;
-            M(npt+1-i,j,2)=173/255;
-            M(npt+1-i,j,3)=209/255;
-        end
-        if(stab(2)) %Subsidy prey
-            M(npt+1-i,j,1)=69/255;
-            M(npt+1-i,j,2)=117/255;
-            M(npt+1-i,j,3)=180/255;
-        end
-        if(stab(3)) %Subsidy predator
-            M(npt+1-i,j,1)=254/255;
-            M(npt+1-i,j,2)=224/255;
-            M(npt+1-i,j,3)=144/255;
-        end
-        if(stab(4))  %Subsidy prey predator
-            M(npt+1-i,j,1)=253/255;
-            M(npt+1-i,j,2)=174/255;
-            M(npt+1-i,j,3)=97/255;
-        end
-        if(stab(5)) %Subsidy prey predator
-            M(npt+1-i,j,1)=253/255;
-            M(npt+1-i,j,2)=174/255;
-            M(npt+1-i,j,3)=97/255;
-        end
-        if(stab(6)) %Subsidy Predator superpredator
-            M(npt+1-i,j,1)=215/255;
-            M(npt+1-i,j,2)=48/255;
-            M(npt+1-i,j,3)=39/255;
-        end
- %       if(stab(7))
- %           M(npt+1-i,j,1)=0.6;
- %           M(npt+1-i,j,3)=0.6;
- %       end
-        if(stab(8)) %Quadruple trouble
-            M(npt+1-i,j,1)=145/255;
-            M(npt+1-i,j,2)=0/255;
-            M(npt+1-i,j,3)=88/255;
-        end
-        if(stab(9)) %Quadruple trouble
-            M(npt+1-i,j,1)=145/255;
-            M(npt+1-i,j,2)=0/255;
-            M(npt+1-i,j,3)=88/255;
-        end
-        if(stab(10)) %Quadruple trouble
-            M(npt+1-i,j,1)=145/255;
-            M(npt+1-i,j,2)=0/255;
-            M(npt+1-i,j,3)=88/255;
+        for stab_index=1:length(stab)
+            if(stab(stab_index))
+                M(npt+1-i,j,1) = M(npt+1-i,j,1) + 10^(stab_index-1);
+            end
         end
         
-        if(sum(stab)>1)
-            M(npt+1-i,j,1)=1;
-            M(npt+1-i,j,2)=1;
-            M(npt+1-i,j,3)=1;
-        end
+%         if(stab(1)) %Subsidy only
+% %             M(npt+1-i,j,1)=116/255;
+% %             M(npt+1-i,j,2)=173/255;
+% %             M(npt+1-i,j,3)=209/255;
+%             M(npt+1-i,j,1) = M(npt+1-i,j,1) + 
+%         end
+%         if(stab(2)) %Subsidy prey
+%             M(npt+1-i,j,1)=69/255;
+%             M(npt+1-i,j,2)=117/255;
+%             M(npt+1-i,j,3)=180/255;
+%         end
+%         if(stab(3)) %Subsidy predator
+%             M(npt+1-i,j,1)=254/255;
+%             M(npt+1-i,j,2)=224/255;
+%             M(npt+1-i,j,3)=144/255;
+%         end
+%         if(stab(4))  %Subsidy prey predator
+%             M(npt+1-i,j,1)=253/255;
+%             M(npt+1-i,j,2)=174/255;
+%             M(npt+1-i,j,3)=97/255;
+%         end
+%         if(stab(5)) %Subsidy prey predator
+%             M(npt+1-i,j,1)=253/255;
+%             M(npt+1-i,j,2)=174/255;
+%             M(npt+1-i,j,3)=97/255;
+%         end
+%         if(stab(6)) %Subsidy Predator superpredator
+%             M(npt+1-i,j,1)=215/255;
+%             M(npt+1-i,j,2)=48/255;
+%             M(npt+1-i,j,3)=39/255;
+%         end
+%  %       if(stab(7))
+%  %           M(npt+1-i,j,1)=0.6;
+%  %           M(npt+1-i,j,3)=0.6;
+%  %       end
+%         if(stab(8)) %Quadruple trouble
+%             M(npt+1-i,j,1)=145/255;
+%             M(npt+1-i,j,2)=0/255;
+%             M(npt+1-i,j,3)=88/255;
+%         end
+%         if(stab(9)) %Quadruple trouble
+%             M(npt+1-i,j,1)=145/255;
+%             M(npt+1-i,j,2)=0/255;
+%             M(npt+1-i,j,3)=88/255;
+%         end
+%         if(stab(10)) %Quadruple trouble
+%             M(npt+1-i,j,1)=145/255;
+%             M(npt+1-i,j,2)=0/255;
+%             M(npt+1-i,j,3)=88/255;
+%         end
+%         
+%         if(sum(stab)>1)
+%             M(npt+1-i,j,1)=1;
+%             M(npt+1-i,j,2)=1;
+%             M(npt+1-i,j,3)=1;
+%         end
  
 %        if(sum(stab)>1)
 %            a1
