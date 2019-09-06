@@ -8,7 +8,7 @@ Bifurcation analysis for paper on Coexistence Dynamics in Tritrophic Food Webs -
 - - [ ] new non-dim HH
 - - [ ] integer values instead of colors HH
 - - [ ] do better next time HH AM
-- [ ] param values RS
+- [x] param values RS
 - [ ] diagrams from literature JB RS
 - [ ] GitHub HH
 - [ ] all the diagrams JB
