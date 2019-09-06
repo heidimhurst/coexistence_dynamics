@@ -1,8 +1,9 @@
-function dxdt = myrm3(t,x,a1,a2,a3,b1,b2,b3,c1,c2,c3,d1,d2)
+function dxdt = myrm3(t,x,K,I,Gamma,Phi,Psi,P,Q,R,dy,dz)
+% x(1) = s, x(2) = x, x(3) = y, x(4) = z
 
-    dxdt = [c1-x(1).*(1+(a1.*x(3))./(1+b1.*x(1)+b2.*x(2)));
-                  x(2).*(c2.*(c3-x(2))-(a2.*x(3))./(1+b1.*x(1)+b2.*x(2)));
-                  x(3).*((a1.*x(1)+a2.*x(2))./(1+b1.*x(1)+b2.*x(2))-(a3.*x(4))./(1+b3*x(3))-d1);
-                  x(4).*((a3.*x(3))./(1+b3.*x(3))-d2)];
+    dxdt = [ I - x(1).*(Gamma - Phi.*x(3)./(1+P.*x(2)+Q.*x(1)));  % ds/dt
+            x(2).*(1 - x(2)./K - x(3)./(1+P.*x(2)+Q.*x(1))); % dx/dt
+            x(3).*((x(2)+x(1))./(1+P.*x(2)+Q.*x(1)) - dy - x(4)./(1+R.*x(3))); % dy/dt
+            x(4).*(Psi.*x(3)./(1+R.*x(3))- dz)]; % dz/dt
 
 end
