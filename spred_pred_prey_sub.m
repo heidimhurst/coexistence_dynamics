@@ -16,7 +16,8 @@ npt = 250; %Size of parameter sampling range (not too large or it'll take foreve
 %a1=4; a2=4; a3=1; b1=3; b2=2; b3=0.2; c1=1; c2=1; c3=1; d1=2/5; d2=1; %GoodDefaultStuff
 %a1=4; a2=4; a3=1; b1=3; b2=2; b3=0.1; c1=20; c2=1; c3=1; d1=0.5; d2=0.5; %Sequence
 
-K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.5; Q = 2.2; R = 1.25; dy = 0.1; dz = 0.1;
+% K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.5; Q = 2.2; R = 1.25; dy = 0.1; dz = 0.1;
+K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.7; Q = 0.8; R = 1.25; dy = 0.1; dz = 0.1;
 
 minpr = 0.01; maxpr = 1;
 
@@ -299,6 +300,22 @@ end
 % save output to file based on
 outfile = "spps_" + npts + "_" + date;
 save(outfile)
+
+%% visualize output - color based on binary interpretation
+% create output matrix mapping binary matrix to indices
+outmat = zeros(npt,npt);
+list_of = unique(M); % ALTERNATIVELY: construct independently to cover all cases
+
+for i=1:length(list_of)
+    outmat(M==list_of(i)) = i;
+end
+
+% plot outmat
+imshow(outmat, [min(min(outmat)),max(max(outmat))])
+colormap(lines(length(list_of)))
+c = colorbar;
+c.Ticks = linspace(1.5,length(list_of)-0.5,length(list_of)) 
+c.TickLabels = {"none","ss2","ss3","ss4","ss5","ss3,5 (multi)","ss3,4,5 (multi)"};
 
 %% visualize output
 
