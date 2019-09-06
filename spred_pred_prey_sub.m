@@ -271,6 +271,13 @@ for i=1:npt
     end
 end
 
+%%
+% save output to file based on
+outfile = "spps_" + npts + "_" + date;
+save(outfile)
+
+%% visualize output
+
 imagesc(M);
 set(gca,'XTick',linspace(0,npt,9));
 set(gca,'XTickLabel', linspace(minpr,maxpr,9),'FontSize',16);
