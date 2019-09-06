@@ -1,4 +1,4 @@
-%% Parameters are I, Gamma, Phi, Psi, P, Q, R, dy, dz
+%% Parameters are K, I, Gamma, Phi, Psi, P, Q, R, dy, dz
 
 %% 1/ Subsidy only
 
