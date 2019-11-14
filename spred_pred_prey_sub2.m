@@ -15,7 +15,8 @@ npt = 250; %Size of parameter sampling range (not too large or it'll take foreve
 %a1=4; a2=4; a3=1; b1=3; b2=2; b3=0.1; c1=20; c2=1; c3=1; d1=0.5; d2=0.5; %Sequence
 
 % K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.5; Q = 2.2; R = 1.25; dy = 0.1; dz = 0.1;
-K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.7; Q = 0.8; R = 1.25; dy = 0.1; dz = 0.1;
+% K = 1.1; I = 0.2; Gamma = 0.9; Phi = 1; Psi = 0.11; P = 0.7; Q = 0.8; R = 1.25; dy = 0.1; dz = 0.1;
+K = 4/3; I = 2/3; Gamma = 1/3; Phi = 3/4; Psi = 1; P = 3/4; Q = 1/2; R = 3/40; dy = 1/3; dz = 1/30; % interesting parameters
 
 minpr = 0.01; maxpr = 1;
 
