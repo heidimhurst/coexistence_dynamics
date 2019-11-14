@@ -215,7 +215,7 @@ end
 
 %%
 % save output to file based on
-outfile = "spps_" + npts + "_" + date;
+outfile = "spps_" + npt + "_" + date;
 save(outfile)
 
 %% visualize output - color based on binary interpretation
